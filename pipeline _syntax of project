@@ -1,0 +1,35 @@
+pipeline{
+    agent any
+    stages{
+        stage('checkout'){
+            steps{
+                git 'https://github.com/Kamal1508/jenkins-java-project.git'
+            }
+        }
+        stage('build'){
+            steps{
+                sh'mvn compile'
+            }
+        }
+        stage('test'){
+            steps{
+                sh'mvn test'
+            }
+        }
+        stage('artifact'){
+            steps{
+                sh'mvn clean package'
+            }
+        }
+        stage('nexus'){
+            steps{
+               credential of nexus
+            }
+        }
+        stage('ansible-deploy'){
+            steps{
+                credential of ansible
+            }
+        }
+    }
+}
